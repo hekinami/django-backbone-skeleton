@@ -6,11 +6,15 @@ const User = require('../models/user');
 class Users extends Backbone.Collection {
     constructor(options) {
         super(options);
-        this.url = '/api/contacts';
+        this.url = '/api/users';
     }
 
     get model() {
         return User;
+    }
+
+    parse(response) {
+        return response.results;
     }
 }
 

@@ -8,13 +8,26 @@ const Users = require('./collections/users');
 
 class UsersApp extends SubApplication{
     showUserList() {
-        let user = new User({name: "bibo"});
-        let users = new Users();
-        users.add(user);
-        user = new User({name: "yuer"});
-        users.add(user);
-        let userList = this.startController(UserList);
-        userList.showList(users);
+        // user = new User({name: "yuer"});
+        // users.add(user);
+        // let userList = this.startController(UserList);
+        // userList.showList(users);
+
+        Application.trigger('loading:start');
+        Application.trigger('app:users:started');
+
+        new Users().fetch({
+            success: (collection) => {
+                // this.showList(collection);
+                let userList = this.startController(UserList);
+                userList.showList(collection);
+                Application.trigger('loading:stop');
+            },
+            fail: (collection, response) => {
+                Application.trigger('loading:stop');
+                Application.trigger('server:error', response);
+            }
+        });
     }
 }
 
