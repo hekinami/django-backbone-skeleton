@@ -6,13 +6,12 @@ const UserList = require('./controllers/userList');
 const User = require('./models/user');
 const Users = require('./collections/users');
 
+const sendAuthentication = function (xhr) {
+    xhr.setRequestHeader('Authorization', ("Basic ".concat(sessionStorage.getItem('authtoken'))));
+};
+
 class UsersApp extends SubApplication{
     showUserList() {
-        // user = new User({name: "yuer"});
-        // users.add(user);
-        // let userList = this.startController(UserList);
-        // userList.showList(users);
-
         Application.trigger('loading:start');
         Application.trigger('app:users:started');
 
@@ -26,7 +25,8 @@ class UsersApp extends SubApplication{
             fail: (collection, response) => {
                 Application.trigger('loading:stop');
                 Application.trigger('server:error', response);
-            }
+            },
+            beforeSend: sendAuthentication 
         });
     }
 }

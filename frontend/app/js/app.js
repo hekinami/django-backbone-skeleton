@@ -8,6 +8,7 @@ const Region = require('./common').Region;
 
 // Initialize all available routes
 require('./apps/users/router');
+require('./apps/login/router');
 
 class DefaultRouter extends Backbone.Router {
     constructor(options) {
@@ -25,6 +26,15 @@ class DefaultRouter extends Backbone.Router {
 
 let Application = {
     start() {
+        // redirect to login page if need authentication
+        Backbone.$.ajaxSetup({
+            statusCode: {
+                403: () =>{
+                    window.location.replace('/#login');
+                }
+            }
+        });
+        
         Application.mainRegion = new Region({el: '#main'});
         
         Application.router = new DefaultRouter();
