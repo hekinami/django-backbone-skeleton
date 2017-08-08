@@ -2,7 +2,7 @@
     Login required
 </h4>
 <p>
-    Use 'john' as user and 'doe' as password.
+    Use 'admin' as user and 'Welcome1' as password.
 </p>
 <form>
     <label for="username">User</label>
